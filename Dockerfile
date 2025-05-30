@@ -26,17 +26,15 @@ ARG REPOSITORY="deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg] https
 ARG VERSION="24.8.5.115"
 ARG PACKAGES="clickhouse-client clickhouse-server clickhouse-common-static"
 
+# Download and install ClickHouse GPG key using curl
 RUN apt-get update \
  && apt-get install --yes --no-install-recommends \
     apt-transport-https \
     dirmngr \
- && GNUPGHOME=$(mktemp -d) \
- && GNUPGHOME="$GNUPGHOME" gpg --no-default-keyring \
-    --keyring /usr/share/keyrings/clickhouse-keyring.gpg \
-    --keyserver keyserver.ubuntu.com \
-    --recv-keys 3A9EA5A50B4D65A7B05E2730968F362334EA3053 \
- && rm -rf "$GNUPGHOME" \
- && chmod +r /usr/share/keyrings/clickhouse-keyring.gpg \
+ && mkdir -p /usr/share/keyrings \
+ && curl -fsSL 'https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key' | \
+    gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg \
+ && chmod 644 /usr/share/keyrings/clickhouse-keyring.gpg \
  && echo "${REPOSITORY}" > /etc/apt/sources.list.d/clickhouse.list \
  && apt-get update \
  && apt-get install --yes --no-install-recommends ${PACKAGES} \
