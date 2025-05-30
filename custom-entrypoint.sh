@@ -73,7 +73,12 @@ fi
 
 # Ensure listen-all.xml is in place
 if [ -f "/etc/clickhouse-server/config.d/listen-all.xml.template" ]; then
+    echo "Copying listen-all.xml template..."
     cp /etc/clickhouse-server/config.d/listen-all.xml.template /etc/clickhouse-server/config.d/listen-all.xml
+    echo "listen-all.xml copied successfully"
+    # Debug: show the content
+    echo "Content of listen-all.xml:"
+    cat /etc/clickhouse-server/config.d/listen-all.xml
 fi
 
 # Fix permissions
