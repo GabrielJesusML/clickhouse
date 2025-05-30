@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<yandex>
+    <logger>
+        <level>{{CLICKHOUSE_LOG_LEVEL}}</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+        <size>1000M</size>
+        <count>10</count>
+    </logger>
+
+    <!-- Ports configuration -->
+    <http_port>{{CLICKHOUSE_HTTP_PORT}}</http_port>
+    <tcp_port>{{CLICKHOUSE_TCP_PORT}}</tcp_port>
+    <mysql_port>{{CLICKHOUSE_MYSQL_PORT}}</mysql_port>
+    <postgresql_port>{{CLICKHOUSE_POSTGRESQL_PORT}}</postgresql_port>
+    <interserver_http_port>{{CLICKHOUSE_INTERSERVER_HTTP_PORT}}</interserver_http_port>
+
+    <!-- Connection settings -->
+    <max_connections>{{CLICKHOUSE_MAX_CONNECTIONS}}</max_connections>
+    <keep_alive_timeout>{{CLICKHOUSE_KEEP_ALIVE_TIMEOUT}}</keep_alive_timeout>
+    <max_concurrent_queries>{{CLICKHOUSE_MAX_CONCURRENT_QUERIES}}</max_concurrent_queries>
+
+    <!-- Memory settings -->
+    <max_server_memory_usage>0</max_server_memory_usage>
+    <max_server_memory_usage_to_ram_ratio>0.9</max_server_memory_usage_to_ram_ratio>
+    <total_memory_profiler_step>4194304</total_memory_profiler_step>
+
+    <!-- Cache settings -->
+    <uncompressed_cache_size>{{CLICKHOUSE_UNCOMPRESSED_CACHE_SIZE}}</uncompressed_cache_size>
+    <mark_cache_size>{{CLICKHOUSE_MARK_CACHE_SIZE}}</mark_cache_size>
+    <mmap_cache_size>{{CLICKHOUSE_MMAP_CACHE_SIZE}}</mmap_cache_size>
+    <compiled_expression_cache_size>{{CLICKHOUSE_COMPILED_EXPRESSION_CACHE_SIZE}}</compiled_expression_cache_size>
+
+    <!-- Paths -->
+    <path>{{CLICKHOUSE_PATH}}</path>
+    <tmp_path>{{CLICKHOUSE_TMP_PATH}}</tmp_path>
+    <user_files_path>{{CLICKHOUSE_PATH}}user_files/</user_files_path>
+    <format_schema_path>{{CLICKHOUSE_PATH}}format_schemas/</format_schema_path>
+
+    <!-- System settings -->
+    <timezone>{{CLICKHOUSE_TIMEZONE}}</timezone>
+    <mlock_executable>{{CLICKHOUSE_MLOCK_EXECUTABLE}}</mlock_executable>
+    <default_database>{{CLICKHOUSE_DEFAULT_DATABASE}}</default_database>
+    <default_profile>default</default_profile>
+
+    <!-- Table size limits -->
+    <max_table_size_to_drop>{{CLICKHOUSE_MAX_TABLE_SIZE_TO_DROP}}</max_table_size_to_drop>
+    <max_partition_size_to_drop>{{CLICKHOUSE_MAX_PARTITION_SIZE_TO_DROP}}</max_partition_size_to_drop>
+
+    <!-- Macros for distributed tables -->
+    <macros>
+        <shard>{{CLICKHOUSE_MACRO_SHARD}}</shard>
+        <replica>{{CLICKHOUSE_MACRO_REPLICA}}</replica>
+        <cluster>{{CLICKHOUSE_MACRO_CLUSTER}}</cluster>
+    </macros>
+
+    <!-- ZooKeeper configuration (optional) -->
+    {{CLICKHOUSE_ZOOKEEPER_HOSTS}}
+
+    <!-- Remote servers configuration -->
+    <remote_servers>
+        <{{CLICKHOUSE_MACRO_CLUSTER}}>
+            <shard>
+                <replica>
+                    <host>localhost</host>
+                    <port>{{CLICKHOUSE_TCP_PORT}}</port>
+                </replica>
+            </shard>
+        </{{CLICKHOUSE_MACRO_CLUSTER}}>
+    </remote_servers>
+
+    <!-- Query log configuration -->
+    <query_log>
+        <database>system</database>
+        <table>query_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </query_log>
+
+    <!-- Other system logs -->
+    <trace_log>
+        <database>system</database>
+        <table>trace_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </trace_log>
+
+    <query_thread_log>
+        <database>system</database>
+        <table>query_thread_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </query_thread_log>
+
+    <part_log>
+        <database>system</database>
+        <table>part_log</table>
+        <partition_by>toYYYYMM(event_date)</partition_by>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+    </part_log>
+
+    <metric_log>
+        <database>system</database>
+        <table>metric_log</table>
+        <flush_interval_milliseconds>7500</flush_interval_milliseconds>
+        <collect_interval_milliseconds>1000</collect_interval_milliseconds>
+    </metric_log>
+
+    <!-- Security settings -->
+    <remote_url_allow_hosts>
+        <host_regexp>.*</host_regexp>
+    </remote_url_allow_hosts>
+
+    <!-- Distributed DDL -->
+    <distributed_ddl>
+        <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+
+    <!-- SSL/TLS Configuration (if needed internally) -->
+    <openSSL>
+        <server>
+            <certificateFile>/etc/clickhouse-server/server.crt</certificateFile>
+            <privateKeyFile>/etc/clickhouse-server/server.key</privateKeyFile>
+            <dhParamsFile>/etc/clickhouse-server/dhparam.pem</dhParamsFile>
+            <verificationMode>none</verificationMode>
+            <loadDefaultCAFile>true</loadDefaultCAFile>
+            <cacheSessions>true</cacheSessions>
+            <disableProtocols>sslv2,sslv3</disableProtocols>
+            <preferServerCiphers>true</preferServerCiphers>
+        </server>
+        <client>
+            <loadDefaultCAFile>true</loadDefaultCAFile>
+            <cacheSessions>true</cacheSessions>
+            <disableProtocols>sslv2,sslv3</disableProtocols>
+            <preferServerCiphers>true</preferServerCiphers>
+            <invalidCertificateHandler>
+                <name>RejectCertificateHandler</name>
+            </invalidCertificateHandler>
+        </client>
+    </openSSL>
+</yandex>

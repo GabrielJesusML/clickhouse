@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<yandex>
+    <profiles>
+        <default>
+            <max_memory_usage>{{CLICKHOUSE_MAX_MEMORY_USAGE}}</max_memory_usage>
+            <load_balancing>{{CLICKHOUSE_LOAD_BALANCING}}</load_balancing>
+            <allow_nondeterministic_mutations>{{CLICKHOUSE_ALLOW_NONDETERMINISTIC_MUTATIONS}}</allow_nondeterministic_mutations>
+        </default>
+        <readonly>
+            <readonly>{{CLICKHOUSE_READONLY}}</readonly>
+        </readonly>
+    </profiles>
+
+    <users>
+        <!-- Default user for backwards compatibility -->
+        <default>
+            <password>{{CLICKHOUSE_PASSWORD}}</password>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <profile>{{CLICKHOUSE_PROFILE}}</profile>
+            <quota>{{CLICKHOUSE_QUOTA}}</quota>
+            <access_management>{{CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT}}</access_management>
+        </default>
+        
+        <!-- Custom admin user defined by environment variables -->
+        <{{CLICKHOUSE_USER}}>
+            <password>{{CLICKHOUSE_PASSWORD}}</password>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <profile>{{CLICKHOUSE_PROFILE}}</profile>
+            <quota>{{CLICKHOUSE_QUOTA}}</quota>
+            <access_management>{{CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT}}</access_management>
+        </{{CLICKHOUSE_USER}}>
+    </users>
+
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </default>
+    </quotas>
+</yandex>
