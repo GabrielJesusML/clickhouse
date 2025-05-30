@@ -9,7 +9,6 @@
     </logger>
 
     <!-- Ports configuration -->
-    <http_port>{{CLICKHOUSE_HTTP_PORT}}</http_port>
     <https_port>{{CLICKHOUSE_HTTPS_PORT}}</https_port>
     <tcp_port>{{CLICKHOUSE_TCP_PORT}}</tcp_port>
     <mysql_port>{{CLICKHOUSE_MYSQL_PORT}}</mysql_port>
@@ -120,8 +119,8 @@
     <!-- SSL/TLS Configuration (if needed internally) -->
     <openSSL>
         <server>
-            <certificateFile>/etc/clickhouse-server/certs/server.crt</certificateFile>
-            <privateKeyFile>/etc/clickhouse-server/certs/server.key</privateKeyFile>
+            <certificateFile>/etc/clickhouse-server/server.crt</certificateFile>
+            <privateKeyFile>/etc/clickhouse-server/server.key</privateKeyFile>
             <dhParamsFile>/etc/clickhouse-server/dhparam.pem</dhParamsFile>
             <verificationMode>none</verificationMode>
             <loadDefaultCAFile>true</loadDefaultCAFile>
@@ -140,4 +139,3 @@
         </client>
     </openSSL>
 </yandex>
-
