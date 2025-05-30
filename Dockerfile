@@ -63,7 +63,7 @@ ENV TZ=UTC
 # Copy configuration templates
 COPY config.xml.template /etc/clickhouse-server/config.xml.template
 COPY users.xml.template /etc/clickhouse-server/users.xml.template
-COPY listen-all.xml.template /etc/clickhouse-server/config.d/listen-all.xml.template
+COPY listen-all.xml.template /etc/clickhouse-server/config.d/listen-all.xml
 
 # Copy custom entrypoint
 COPY custom-entrypoint.sh /custom-entrypoint.sh
